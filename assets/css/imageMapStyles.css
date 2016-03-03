@@ -1,0 +1,33 @@
+ /*Styles for image map section*/
+map{
+    display: inline;
+}
+
+#imageElement{
+    padding: 0 1.3em;   
+}       
+#descElement{
+    font-size:14px;
+    font-style: italic;         
+}
+
+button{
+    width: 3em;
+    height:3em;
+    padding:0;
+    border:none;
+}       
+button:focus{
+    outline-color:gray;
+}       
+button:disabled{
+    opacity: 0.63;
+}       
+#nextButton{
+    background: url("../images/nextButton.png") no-repeat;
+    background-size: contain;  
+}       
+#prevButton{
+    background:#fff url("../images/prevButton.png") no-repeat;
+    background-size: contain;
+}
