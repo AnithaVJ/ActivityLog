@@ -38,13 +38,14 @@ function play(){
 }
 
 function cloneRow() {       
-    var row = document.getElementById("activityLog0"); 
+    var row = document.getElementById("activityLog"); 
     var clone = row.cloneNode(true); // copy children 
     clone.id = "activityLog"+mainIndex; // change id or other attributes/contents
     
     var table = document.getElementById("activityTable"); 
     table.appendChild(clone); // add new row to end of table
     document.getElementById(clone.id).getElementsByClassName('time')[0].innerHTML = "00:00:00";
+    document.getElementById(clone.id).className = "active";
 }
 
 function add(){
@@ -54,12 +55,12 @@ function add(){
     activityList.push(n);
 
     document.getElementById("add").style.outline = "none"; //remove outline after click
-    if (mainIndex==0){
-        document.getElementById("activityLog0").className = "active"; //pre created first row made visible
-    }
-    else{
+    // if (mainIndex==0){
+    //     document.getElementById("activityLog0").className = "active"; //pre created first row made visible
+    // }
+    // else{
         cloneRow();     //dynamically create/clone other rows                   
-    }   
+    // }   
 }
 
 
@@ -78,16 +79,17 @@ function playPause(rowIndex){
     document.getElementById('activityLog'+rowIndex).getElementsByClassName('stop')[0].disabled = false;
     var p = document.getElementById('activityLog'+rowIndex).getElementsByClassName('playPause')[0];
     
-    if(currentObj.isPlaying){           //pause
+    if(currentObj.isPlaying){           //pause button to be changed to play
         p.style.backgroundImage = "url('../assets/images/play.png')";
         p.style.backgroundSize = "contain"; 
         clearInterval(currentObj.timer);
-        this.isPlaying = false;     
+        currentObj.isPlaying = false;     
     }
-    else{       //play
+    else{                               //play button to be changed to pause
         p.style.backgroundImage = "url('../assets/images/pause.png')";
         p.style.backgroundSize = "contain";             
         play.call(currentObj);
+        currentObj.isPlaying = true; 
     }
 }
 

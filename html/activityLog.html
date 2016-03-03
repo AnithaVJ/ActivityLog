@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--DOCTYPE HTML-->
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +8,7 @@
 
     <link rel="stylesheet" href="../assets/css/activityLogStyles.css">
     <link rel="stylesheet" href="../assets/css/commonStyles.css">
-    <script src="../js/activity.js"></script>
-
-    <script>
-    
-</script>
+    <script src="../js/activity.js"></script>   
 </head>
 
 <body>  <!-- onload="display();" -->
@@ -32,8 +28,8 @@
 
     <section class="col-9 col-m-12">
         <button id="add" onclick="add();"></button>
-        <table id="activityTable">
-            <tr id="activityLog0"  class="hidden">
+        <table class="hidden">
+            <tr id="activityLog"  class="hidden">
                 <td>
                     <input type="text" name="activity" class="activityName" placeholder="Activity Name">
                 </td>
@@ -43,11 +39,12 @@
                 <td>
                     <button class='playPause' onclick="playPause(this.parentNode.parentNode.rowIndex);"></button>
                     <button class='stop' onclick="stop(this.parentNode.parentNode.rowIndex);"></button>   
-                     <button class='delete' onclick="delete(this.parentNode.parentNode.rowIndex);"></button>   
-                </td>
-             
+                    <button class='delete' onclick="delete(this.parentNode.parentNode.rowIndex);"></button>   
+                </td>  
             </tr>
         </table>
+
+        <table id="activityTable"> </table>
     </section>
 
 </div>
