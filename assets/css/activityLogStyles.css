@@ -30,11 +30,21 @@
 
 #activityTable{
     width: 100%;
+    border-collapse: separate;
 }
 
 td{
-    padding: 1em;
+    width:33%;
+    padding-left: 0.5em;
+    text-align: center;
 }
+
+tr{
+    border: 1px solid black;
+    border-radius: 12px;
+    -moz-border-radius: 12px;
+}
+
 .hidden{        
     display: none;
     overflow: hidden;
