@@ -1,0 +1,64 @@
+/*  The timer table styles */
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+.playPause{
+    background: url("../images/play.png");
+    background-size: contain;
+}
+.stop{
+    background: url("../images/stop.png");
+    background-size: contain;
+}
+#add{
+    background: url("../images/actAdd.png");
+    background-size: contain;
+}
+
+.delete{
+    background: url("../images/delete.png");
+    background-size: contain;
+}
+
+#activityTable{
+    width: 100%;
+}
+
+td{
+    padding: 1em;
+}
+.hidden{        
+    display: none;
+    overflow: hidden;
+    height: 0;    
+    opacity: 0;    
+    }
+.active{    
+    padding: 1.5em;
+    -webkit-animation: fadeIn 1s;   
+    animation: fadeIn 1s;
+    display: block;
+    height: auto;   
+    opacity: 1;    
+    }
+
+button{
+    width: 3em;
+    height: 3em;
+    padding: 0;
+    border: none;
+    }       
+button:focus{
+    outline-color: gray;
+    }       
+button:disabled{
+    opacity: 0.63;
+    }

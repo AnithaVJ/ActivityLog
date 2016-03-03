@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet" type="text/css" >
+
+    <link rel="stylesheet" href="../assets/css/activityLogStyles.css">
+    <link rel="stylesheet" href="../assets/css/commonStyles.css">
+    <script src="../js/activity.js"></script>
+
+    <script>
+    
+</script>
+</head>
+
+<body>  <!-- onload="display();" -->
+<header>
+    <h1>Header</h1>
+</header>
+
+<div class="row">
+    <nav class="col-3 col-m-3 menu">
+        <ul>
+            <li>Menu</li>
+            <li>Menu</li>
+            <li>Menu</li>
+            <li>Menu</li>
+        </ul>
+    </nav>
+
+    <section class="col-9 col-m-12">
+        <button id="add" onclick="add();"></button>
+        <table id="activityTable">
+            <tr id="activityLog0"  class="hidden">
+                <td>
+                    <input type="text" name="activity" class="activityName" placeholder="Activity Name">
+                </td>
+                <td>
+                    <p class="time">00:00:00</p>
+                </td>
+                <td>
+                    <button class='playPause' onclick="playPause(this.parentNode.parentNode.rowIndex);"></button>
+                    <button class='stop' onclick="stop(this.parentNode.parentNode.rowIndex);"></button>   
+                     <button class='delete' onclick="delete(this.parentNode.parentNode.rowIndex);"></button>   
+                </td>
+             
+            </tr>
+        </table>
+    </section>
+
+</div>
+
+<footer>
+    <p>Footer</p>
+</footer>
+
+</body>
+</html>
