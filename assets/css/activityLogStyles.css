@@ -14,7 +14,7 @@
     background: url("../images/play.png");
     background-size: contain;
 }
-.stop{
+.reset{
     background: url("../images/stop.png");
     background-size: contain;
 }
@@ -23,7 +23,7 @@
     background-size: contain;
 }
 
-.delete{
+.save{
     background: url("../images/delete.png");
     background-size: contain;
 }
