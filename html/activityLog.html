@@ -28,21 +28,8 @@
 
     <section class="col-9 col-m-12">
         <button id="add" onclick="add();"></button>
-        <table class="hidden">
-            <tr id="activityLog"  class="hidden">
-                <td>
-                    <input type="text" name="activity" size="30" maxlength="255" value="" class="activityName" placeholder="Activity Name">
-                </td>
-                <td>
-                    <p class="time">00:00:00</p>
-                </td>
-                <td>
-                    <button class="playPause" onclick="playPause(this.parentNode.parentNode.rowIndex);"></button>
-                    <button class="reset" onclick="stop(this.parentNode.parentNode.rowIndex);"></button>   
-                    <button class="save" onclick="delete(this.parentNode.parentNode.rowIndex);"></button>   
-                </td>  
-            </tr>
-        </table>
+
+        <!-- <table class="hidden"></table> -->
 
         <table id="activityTable"> </table>
     </section>

@@ -6,74 +6,66 @@ function Activity(i){
     this.indexVar = i;
     this.totalSeconds = 0;
     this.isPlaying = false;
+    var me = this;
     this.timer;
-
     this.playPauseButton;
-    this.resetButton;
-    this.saveButton;
+    this.resetButton; 
+    this.saveButton;      
     this.timeDisplay;
     this.activityNameDisplay;
-    
-    this.timeDisplay.innerHTML = "00:00:00";
-
+   
     this.play = function(){
     //image change to pause
-        var p = document.getElementById('activityLog'+this.index).getElementsByClassName('playPause')[0];
-        p.style.backgroundImage = "url('../assets/images/pause.png')";
-        p.style.backgroundSize = "contain";
-        isPlaying = true;
+        this.playPauseButton.style.backgroundImage = "url('../assets/images/pause.png')";
+        this.playPauseButton.style.backgroundSize = "contain";
+        this.isPlaying = true;
 
         this.timer = setInterval(
         (function(self) { 
             return function() { 
                 self.totalSeconds += 1; 
-                update(self.totalSeconds,self.indexVar);
+                self.update(self.totalSeconds,self.timeDisplay);
                 }
             }
         )(this), 1000 );     
     }
 
+
     this.pause = function(){    
         //image change to play
-        var p = document.getElementById('activityLog'+this.index).getElementsByClassName('playPause')[0];
-        p.style.backgroundImage = "url('../assets/images/play.png')";
-        p.style.backgroundSize = "contain"; 
+        this.playPauseButton.style.backgroundImage = "url('../assets/images/play.png')";
+        this.playPauseButton.style.backgroundSize = "contain"; 
         this.isPlaying = false; 
         clearInterval(this.timer);           
     }
 
-    this.playPause = function(){        //eventlistener
-        this.resetButton.disabled = false; 
-        if(this.isPlaying){             //pause button tapped
-            this.pause();
+
+    this.playPause = function(){
+        console.log("indside play pause -" + me);
+        me.resetButton.disabled = false; 
+        if(me.isPlaying){             //pause button tapped
+            me.pause();
         }
         else{                           //play button tapped
-            this.play();
+            me.play();
         }
-    } 
+    }
+  
 
     this.reset = function(){            //eventlistener
-        this.totalSeconds = 0;
-        this.isPlaying = false;
-        this.timeDisplay.innerHTML = "00:00:00";
+        me.totalSeconds = 0;
+        me.isPlaying = false;
+        me.timeDisplay.innerHTML = "00:00:00";
         clearInterval(this.timer);
-        this.playPauseButton.disabled = false;
-        this.resetButton.disabled = true;
+        me.playPauseButton.disabled = false;
+        me.resetButton.disabled = true;
     }
 
-    this.save = function(){  /* move to aside...load in local*/ } //eventlistener
+    // this.save = function(){ use me.. /* move to aside...load in local*/ } //eventlistener
 
-    this.remove = function(){ /*remove from aside...splice array...do local clean*/    }
+    // this.remove = function(){ /*remove from aside...splice array...do local clean*/    }
 
-}
-
-Activity.prototype.createUI = function(mainIndex){
-    this.playPauseButton;
-    this.resetButton;
-    this.timeDisplay;
-    this.saveButton;
-    this.activityNameDisplay;
-}
+};
 
 Activity.prototype.update = function(tot,timeDisp) {
     var seconds=hours=minutes=0;
@@ -85,8 +77,61 @@ Activity.prototype.update = function(tot,timeDisp) {
     minutes = Math.floor(seconds / 60);
     seconds -= minutes * (60);
 
-    timeDisp.getElementsByClassName('time')[0].innerHTML = pad(hours)+":"+pad(minutes)+":"+pad(seconds);
-};
+    timeDisp.innerHTML = pad(hours)+":"+pad(minutes)+":"+pad(seconds);
+}
+
+Activity.prototype.createUI = function(){
+    var row = document.createElement("tr");
+    row.id='activityLog'+mainIndex;
+    row.className = 'active'; 
+
+    var me= this;
+    
+    var td1 = document.createElement("td");
+    var td2 = document.createElement("td");
+    var td3 = document.createElement("td");
+
+    var button1 = document.createElement("button");
+    button1.className = 'playPause';
+    button1.addEventListener("click", function(){me.playPause();} )//this.mouseMoving.bind(this)
+    this.playPauseButton = button1;
+
+    var button2 = document.createElement("button");
+    button1.addEventListener("click", function(){me.reset();} );
+    button2.className= 'reset';
+    this.resetButton = button2;    
+
+    var button3 = document.createElement("button");
+    button1.addEventListener("click",  function(){me.save();} );
+    button3.className = 'save';
+    this.saveButton = button3;
+
+    var disp = document.createElement("p");
+    disp.className = 'time';
+    disp.innerHTML = "00:00:00";
+    this.timeDisplay = disp;
+
+    var aName = document.createElement("input");
+    aName.type = 'text';
+    aName.name = "activity";
+    aName.size = 30;
+    aName.maxlength = 255;
+    aName.className = 'activityName';
+    aName.placeholder = 'Activity Name';
+    this.activityNameDisplay = aName;
+
+    td1.appendChild(aName);               
+    td2.appendChild(disp);               
+    td3.appendChild(button1);
+    td3.appendChild(button2);
+    td3.appendChild(button3);
+
+    row.appendChild(td1);
+    row.appendChild(td2);
+    row.appendChild(td3);  
+
+    return row;  
+}
 
 
 //to display in doubles
@@ -98,47 +143,23 @@ function pad(n) {
 }
 
 function add(){
+    document.getElementById("add").style.outline = "none";
     ++mainIndex;
-    var n = new activityObj();
-    activityObj.createUI(mainIndex);
+    var  newActivity = new Activity(mainIndex);
+    var addRow = newActivity.createUI();
+    var table = document.getElementById("activityTable");    
+    table.appendChild(addRow);
 }
 
-
-function cloneRow() {       
-    var row = document.getElementById("activityLog"); 
-    var clone = row.cloneNode(true); // copy children 
-    clone.id = "activityLog"+mainIndex; // change id or other attributes/contents
-    clone.className = "active";
-
-    var newActivity = new Activity();    
-
-    newActivity.playPauseButton = document.getElementById(clone.id).getElementsByClassName('playPause')[0];
-    newActivity.resetButton = document.getElementById(clone.id).getElementsByClassName('stop')[0];
-    newActivity.saveButton = document.getElementById(clone.id).getElementsByClassName('delete')[0];
-    newActivity.timeDisplay = document.getElementById(clone.id).getElementsByClassName('time')[0];
-    newActivity.activityNameDisplay = document.getElementById(clone.id).getElementsByClassName('activityName')[0];
-
-    var table = document.getElementById("activityTable"); 
-    table.appendChild(clone); // add new row to end of table
-    // document.getElementById(clone.id).className = "active";
-}
-
-// function add(){
-//     //creating new timer object with each row addition
-//     ++mainIndex;
-//     var n = new logObj(mainIndex);
-//     activityList.push(n);
-
-//     document.getElementById("add").style.outline = "none"; //remove outline after click
-//     // if (mainIndex==0){
-//     //     document.getElementById("activityLog0").className = "active"; //pre created first row made visible
-//     // }
-//     // else{
-//         cloneRow();     //dynamically create/clone other rows                   
-//     // }   
-// }
-
+// function delRow()
+//   {
+//     var current = window.event.srcElement;
+//     //here we will delete the line
+//     while ( (current = current.parentElement)  && current.tagName !="TR");
+//          current.parentElement.removeChild(current);
+//   }
 // function delete(i){
 //     document.getElementById("activityTable").deleteRow(i);
 //     activityList.splice(i,);
+    // --mainIndex;
 // }
