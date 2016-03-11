@@ -34,24 +34,26 @@ header {
 .menu li {
     padding: 0.7em;
     margin-bottom: 0.7em;
-    background-color : #4D8681;
+   /* background-color : #4D8681;*/
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     text-align: center;
 }
 .menu li:hover {
     background-color: #639098;
 }
+
 aside {
-    background-color: #4D8681;
-    padding: 1em;
+    /*background-color: #4D8681;
+    padding: 1em;*/
     text-align: center;
-    font-size: 14px;
+    /*font-size: 14px;*/
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
+
 footer {
     font-size: 90%;
     background: #639098;
-    padding: 2em;
+    padding: 0.7em;
 }
 /* For mobile phones: */
 [class*="col-"] {
