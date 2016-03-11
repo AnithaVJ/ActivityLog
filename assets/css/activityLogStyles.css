@@ -1,0 +1,108 @@
+/*  The timer table styles */
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.playPause{
+    background: url("../images/play.png");
+    background-size: contain;
+}
+.reset{
+    background: url("../images/stop.png");
+    background-size: contain;
+}
+#add{
+    background: url("../images/actAdd.png");
+    background-size: contain;
+}
+
+.trash{
+    background: url("../images/trash.png");
+    background-size: contain;
+}
+
+.save{
+    background: url("../images/tick.png");
+    background-size: contain;
+}
+
+#activityTable, #activityTableCompleted{
+    width: 100%;
+}
+
+#activityTableCompleted tr:hover {
+    background-color: #639098;
+}
+
+#activityTable td{
+   padding: 0.5em;
+   width: 33%;
+   text-align: justify;
+}
+
+#activityTableCompleted tr:hover td {
+    -moz-box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+}
+#activityTableCompleted tr:hover td:first-child {
+    -moz-box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+}
+#activityTableCompleted tr:hover td:last-child {
+    -moz-box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 2px 4px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+#activityTableCompleted tr:hover {
+    background-color: #639098;
+}
+
+.clear{
+    height:20px;
+}
+
+.hidden{        
+    display: none;
+    overflow: hidden;
+    height: 0;    
+    opacity: 0;    
+    }
+
+.active{    
+    -webkit-animation: fadeIn 1s;   
+    animation: fadeIn 1s;
+    display: block;
+    height: auto;   
+    opacity: 1;    
+    }
+
+button.trash{ 
+    display : none;
+    visibility: hidden;
+}
+
+tr:hover button.trash{
+    display: inline;
+    visibility: visible;
+}
+
+button{
+    width: 2.5em;
+    height: 2.5em;
+    padding: 0;
+    border: none;
+    }       
+button:focus{
+    outline-color: gray;
+    }       
+button:disabled{
+    opacity: 0.63;
+    }
