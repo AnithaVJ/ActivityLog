@@ -4,7 +4,7 @@ var activityList = [];
 var idCount = 0;
 
 function remove(){
-     localStorage.removeItem('activityList');
+    localStorage.removeItem('activityList');
 }
 
 function Activity(i){
@@ -46,7 +46,6 @@ function Activity(i){
 
 
     this.playPause = function(){
-        console.log("indside play pause -" + me);
         me.resetButton.disabled = false; 
         if(me.isPlaying){             //pause button tapped
             me.pause();
@@ -70,7 +69,7 @@ function Activity(i){
 
     this.save = function(){ 
         this.pause();
-        showNotification();
+       
         var obj = getActivityList("activityList");
         ++idCount;
 
@@ -82,28 +81,29 @@ function Activity(i){
 
         activityToSave.completedTimeDisplay = this.timeDisplay.innerHTML;
         activityToSave.tots = this.totalSeconds;
-        activityToSave.id = idCount;
+        activityToSave.idVar =  "ac"+idCount;
 
         obj['list'].push(activityToSave);
         localStorage.setItem('activityList', JSON.stringify(obj['list']));
 
-        document.getElementById('activityLog'+this.indexVar).style.display = "none";
-        // --mainIndex;
+        var table = document.getElementById("activityTable");   
+        var row = document.getElementById('activityLog'+this.indexVar);
+        var newRow = document.createElement("tr"); 
+        var td = document.createElement("td");   
+        var notif = document.createElement("p");
+        notif.innerHTML =  "Activity has been saved";
+        td.appendChild(notif);
+        newRow.appendChild(td);
+        newRow.style.backgroundColor =  '#639098';
+        table.replaceChild(newRow,row);
+
+        setTimeout(
+            function() {
+                newRow.style.display = "none";
+            },
+            2000);
     } 
   };
-
-
-function showNotification(){
-    var notifDiv = document.getElementById("notification");    
-    notifDiv.style.right = "30px";
-    setTimeout("hideNotification()", 2000);
-}
-
-function hideNotification(){
-    var notifDiv = document.getElementById("notification");    
-    notifDiv.style.right = "-400px";
-}
-
 
 Activity.prototype.update = function(tot,timeDisp) {
     var seconds=hours=minutes=0;
@@ -174,16 +174,49 @@ function CompletedActivity(){
     this.completedActivityName;
     this.completedTimeDisplay;
     this.tots;
-    this.id;
+    this.idVar;
     this.trashButton;
 
-    this.trash = function(){    
-        document.getElementById(this.id).style.display = "none";
+    this.trash = function(){
+        var row = document.getElementById(this.idVar);
+        row.style.display = "none";
         var obj = getActivityList("activityList");
-        obj['list'].splice(this.id,1);
-        localStorage.setItem('activityList', JSON.stringify(obj['list']));
+        obj['list'].splice(this.idVar,1);
+        localStorage.setItem('activityList', JSON.stringify(obj['list']));               
     }
 };
+
+ CompletedActivity.prototype.createUI = function(obj){
+        var row = document.createElement("tr");                 
+        var td1 = document.createElement("td");
+        var td2 = document.createElement("td");
+        var me = this;
+      
+        var aName = document.createElement("p");
+        aName.className = 'activityName';
+        aName.innerHTML = obj.completedActivityName;
+        this.completedActivityName = aName;
+
+        var disp = document.createElement("p");
+        disp.className = 'time';
+        disp.innerHTML =  obj.completedTimeDisplay
+        this.completedTimeDisplay = disp;
+
+        var tButton = document.createElement("button");
+        tButton.className = 'trash';
+        tButton.addEventListener("click", function(){me.trash();} );
+        this.trashButton = tButton;    
+
+        td1.appendChild(aName); 
+        td2.appendChild(tButton);              
+        td2.appendChild(disp);  
+        
+        row.appendChild(td1);
+        row.appendChild(td2);
+        
+        row.id = this.idVar
+        return row;  
+    }
 
 
 CompletedActivity.prototype.popFromActivityList = function(arrayName) {
@@ -192,41 +225,6 @@ CompletedActivity.prototype.popFromActivityList = function(arrayName) {
     arrayItem = existingArray.pop();
     localStorage.setItem(arrayName,JSON.stringify(existingArray));
   }
-}
-
-CompletedActivity.prototype.createUI = function(obj){
-    var row = document.createElement("tr");   
-    this.tots = obj.tots  ;
-    var me= this;
-
-    var td1 = document.createElement("td");
-    var td2 = document.createElement("td");
-  
-    var button1 = document.createElement("button");
-    button1.className = 'trash';
-    button1.addEventListener("click", function(){me.trash();} );
-    this.trashButton = button1;
-
-    var aName = document.createElement("p");
-    aName.className = 'activityName';
-    aName.innerHTML = obj.completedActivityName;
-    this.completedActivityName = aName;
-
-    var disp = document.createElement("p");
-    disp.className = 'time';
-    disp.innerHTML =  obj.completedTimeDisplay
-    this.completedTimeDisplay = disp;
-
-    td1.appendChild(aName); 
-    td2.appendChild(button1);              
-    td2.appendChild(disp);  
-    
-    row.appendChild(td1);
-    row.appendChild(td2);
-    
-    row.id = obj.id;
-
-    return row;  
 }
 
 function getActivityList (arrayName) {
@@ -248,7 +246,8 @@ function showList(){
     var obj = getActivityList("activityList");
     var activityList = obj['list'];
     idCount = obj['count'];
-    var activity = new CompletedActivity();
+
+    
     var table = document.getElementById("activityTableCompleted");   
     var rowCount = table.rows.length; 
 
@@ -258,6 +257,9 @@ function showList(){
     }
     
     for (var i = 0; i < activityList.length; i++) {
+        var activity = new CompletedActivity();
+        activity.tots = activityList[i].tots;
+        activity.idVar = String(activityList[i].idVar);  
         var addRow = activity.createUI(activityList[i]);
         table.appendChild(addRow);
     }
@@ -273,7 +275,7 @@ function pad(n) {
 }
 
 function add(){
-    document.getElementById("add").style.outline = "none";
+    // document.getElementById("add").style.outline = "none";
     ++mainIndex;
     var  newActivity = new Activity(mainIndex);
     var addRow = newActivity.createUI();

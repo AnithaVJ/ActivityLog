@@ -7,7 +7,15 @@
     <link href="http://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" href="../assets/css/activityLogStyles.css">
     <link rel="stylesheet" href="../assets/css/commonStyles.css">
-    <script src="../js/activity.js"></script>   
+    <script src="../js/activity.js"></script> 
+    <script>
+        function headingBgColor(e){
+            if(e == 'over')
+                document.getElementById('listHeading').style.backgroundColor ='#639098';
+            else if(e == 'out')
+                document.getElementById('listHeading').style.backgroundColor ='white';
+        }
+    </script>  
 </head>
 
 <body onload="showList();">
@@ -25,19 +33,15 @@
 </ul>
 </nav>
 
-<div id="notification"> 
-    <p>Activity Saved</p>
-</div>
-
 <section class="col-6 col-m-9">
     <button id="add" onclick="add();"></button>
     <table id="activityTable"> </table>
 </section>
 
-<!-- <section class = "clear col-3 col-m-12"></section> -->
+<section class = "clear col-3 col-m-12"></section>
 <aside class="col-3 col-m-12">
-    <p style = "font: italic bold 1.5em Dancing Script; "> Completed Activities  </p>
-    <table id="activityTableCompleted"></table>
+    <p id="listHeading" style = "font: italic bold 1.5em Dancing Script; padding:0.5em;"> Completed Activities  </p>
+    <table id="activityTableCompleted" onmouseover="headingBgColor('over');" onmouseout="headingBgColor('out');"></table>
 </aside>
 
 </div>

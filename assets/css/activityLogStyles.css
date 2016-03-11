@@ -40,7 +40,9 @@
 }
 
 #activityTable td{
-    padding: 1em;   
+   padding: 0.5em;
+   width: 33%;
+   text-align: justify;
 }
 
 #activityTableCompleted tr:hover td {
@@ -75,7 +77,6 @@
     }
 
 .active{    
-    padding: 1.5em;
     -webkit-animation: fadeIn 1s;   
     animation: fadeIn 1s;
     display: block;
@@ -84,19 +85,13 @@
     }
 
 button.trash{ 
+    display : none;
     visibility: hidden;
 }
 
 tr:hover button.trash{
- visibility: visible;
-}
-
-#notification{
-    right: -400px;
-    transition: right 1s;
-    padding: 0.7em;
-    background-color: #639098;
-    position: absolute;
+    display: inline;
+    visibility: visible;
 }
 
 button{
