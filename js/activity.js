@@ -1,12 +1,17 @@
 //Timer objects will be pushed to activityList
 var mainIndex = -1; 
 var activityList = [];
+var idCount = 0;
+
+function remove(){
+     localStorage.removeItem('activityList');
+}
 
 function Activity(i){
-    this.indexVar = i;
     this.totalSeconds = 0;
     this.isPlaying = false;
     var me = this;
+    this.indexVar = i;
     this.timer;
     this.playPauseButton;
     this.resetButton; 
@@ -27,8 +32,8 @@ function Activity(i){
                 self.update(self.totalSeconds,self.timeDisplay);
                 }
             }
-        )(this), 1000 );     
-    }
+        )(this),1000);     
+    },
 
 
     this.pause = function(){    
@@ -37,7 +42,7 @@ function Activity(i){
         this.playPauseButton.style.backgroundSize = "contain"; 
         this.isPlaying = false; 
         clearInterval(this.timer);           
-    }
+    },
 
 
     this.playPause = function(){
@@ -49,23 +54,56 @@ function Activity(i){
         else{                           //play button tapped
             me.play();
         }
-    }
-  
+    },
+
 
     this.reset = function(){            //eventlistener
-        me.totalSeconds = 0;
-        me.isPlaying = false;
-        me.timeDisplay.innerHTML = "00:00:00";
+        this.totalSeconds = 0;
+        this.isPlaying = false;
+        this.timeDisplay.innerHTML = "00:00:00";
         clearInterval(this.timer);
-        me.playPauseButton.disabled = false;
-        me.resetButton.disabled = true;
-    }
+        this.playPauseButton.disabled = false;
+        this.playPauseButton.style.backgroundImage = "url('../assets/images/play.png')";
+        this.playPauseButton.style.backgroundSize = "contain"; 
+        this.resetButton.disabled = true;
+    },
 
-    // this.save = function(){ use me.. /* move to aside...load in local*/ } //eventlistener
+    this.save = function(){ 
+        this.pause();
+        showNotification();
+        var obj = getActivityList("activityList");
+        ++idCount;
 
-    // this.remove = function(){ /*remove from aside...splice array...do local clean*/    }
+        var activityToSave = new CompletedActivity();
+        if(this.activityNameDisplay.value == "")
+            activityToSave.completedActivityName = "activity"+idCount;
+        else
+            activityToSave.completedActivityName = this.activityNameDisplay.value;
 
-};
+        activityToSave.completedTimeDisplay = this.timeDisplay.innerHTML;
+        activityToSave.tots = this.totalSeconds;
+        activityToSave.id = idCount;
+
+        obj['list'].push(activityToSave);
+        localStorage.setItem('activityList', JSON.stringify(obj['list']));
+
+        document.getElementById('activityLog'+this.indexVar).style.display = "none";
+        // --mainIndex;
+    } 
+  };
+
+
+function showNotification(){
+    var notifDiv = document.getElementById("notification");    
+    notifDiv.style.right = "30px";
+    setTimeout("hideNotification()", 2000);
+}
+
+function hideNotification(){
+    var notifDiv = document.getElementById("notification");    
+    notifDiv.style.right = "-400px";
+}
+
 
 Activity.prototype.update = function(tot,timeDisp) {
     var seconds=hours=minutes=0;
@@ -83,13 +121,12 @@ Activity.prototype.update = function(tot,timeDisp) {
 Activity.prototype.createUI = function(){
     var row = document.createElement("tr");
     row.id='activityLog'+mainIndex;
-    row.className = 'active'; 
-
-    var me= this;
+    row.className = 'active';     
     
     var td1 = document.createElement("td");
     var td2 = document.createElement("td");
     var td3 = document.createElement("td");
+    var me= this;
 
     var button1 = document.createElement("button");
     button1.className = 'playPause';
@@ -97,12 +134,12 @@ Activity.prototype.createUI = function(){
     this.playPauseButton = button1;
 
     var button2 = document.createElement("button");
-    button1.addEventListener("click", function(){me.reset();} );
+    button2.addEventListener("click", function(){me.reset();} );
     button2.className= 'reset';
     this.resetButton = button2;    
 
     var button3 = document.createElement("button");
-    button1.addEventListener("click",  function(){me.save();} );
+    button3.addEventListener("click",  function(){me.save();} );
     button3.className = 'save';
     this.saveButton = button3;
 
@@ -133,6 +170,99 @@ Activity.prototype.createUI = function(){
     return row;  
 }
 
+function CompletedActivity(){
+    this.completedActivityName;
+    this.completedTimeDisplay;
+    this.tots;
+    this.id;
+    this.trashButton;
+
+    this.trash = function(){    
+        document.getElementById(this.id).style.display = "none";
+        var obj = getActivityList("activityList");
+        obj['list'].splice(this.id,1);
+        localStorage.setItem('activityList', JSON.stringify(obj['list']));
+    }
+};
+
+
+CompletedActivity.prototype.popFromActivityList = function(arrayName) {
+  var existingArray = getActivityList(arrayName);
+  if (existingArray.length > 0) {
+    arrayItem = existingArray.pop();
+    localStorage.setItem(arrayName,JSON.stringify(existingArray));
+  }
+}
+
+CompletedActivity.prototype.createUI = function(obj){
+    var row = document.createElement("tr");   
+    this.tots = obj.tots  ;
+    var me= this;
+
+    var td1 = document.createElement("td");
+    var td2 = document.createElement("td");
+  
+    var button1 = document.createElement("button");
+    button1.className = 'trash';
+    button1.addEventListener("click", function(){me.trash();} );
+    this.trashButton = button1;
+
+    var aName = document.createElement("p");
+    aName.className = 'activityName';
+    aName.innerHTML = obj.completedActivityName;
+    this.completedActivityName = aName;
+
+    var disp = document.createElement("p");
+    disp.className = 'time';
+    disp.innerHTML =  obj.completedTimeDisplay
+    this.completedTimeDisplay = disp;
+
+    td1.appendChild(aName); 
+    td2.appendChild(button1);              
+    td2.appendChild(disp);  
+    
+    row.appendChild(td1);
+    row.appendChild(td2);
+    
+    row.id = obj.id;
+
+    return row;  
+}
+
+function getActivityList (arrayName) {
+  var completedList = [];  
+  var fetchArrayObject = localStorage.getItem(arrayName);
+  if (typeof fetchArrayObject !== 'undefined') {
+    if (fetchArrayObject !== null) { 
+        completedList = JSON.parse(fetchArrayObject); 
+        idCount = completedList.length;
+    }
+  }
+   return {
+        list: completedList,
+        count: idCount
+    };
+}
+
+function showList(){
+    var obj = getActivityList("activityList");
+    var activityList = obj['list'];
+    idCount = obj['count'];
+    var activity = new CompletedActivity();
+    var table = document.getElementById("activityTableCompleted");   
+    var rowCount = table.rows.length; 
+
+    if(rowCount != 0){
+        while(--rowCount) 
+            table.deleteRow(rowCount);
+    }
+    
+    for (var i = 0; i < activityList.length; i++) {
+        var addRow = activity.createUI(activityList[i]);
+        table.appendChild(addRow);
+    }
+}
+
 
 //to display in doubles
 function pad(n) { 
@@ -150,16 +280,3 @@ function add(){
     var table = document.getElementById("activityTable");    
     table.appendChild(addRow);
 }
-
-// function delRow()
-//   {
-//     var current = window.event.srcElement;
-//     //here we will delete the line
-//     while ( (current = current.parentElement)  && current.tagName !="TR");
-//          current.parentElement.removeChild(current);
-//   }
-// function delete(i){
-//     document.getElementById("activityTable").deleteRow(i);
-//     activityList.splice(i,);
-    // --mainIndex;
-// }

@@ -1,38 +1,44 @@
-<!--DOCTYPE HTML-->
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='http://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
     <link href="http://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet" type="text/css" >
-
     <link rel="stylesheet" href="../assets/css/activityLogStyles.css">
     <link rel="stylesheet" href="../assets/css/commonStyles.css">
     <script src="../js/activity.js"></script>   
 </head>
 
-<body>  <!-- onload="display();" -->
+<body onload="showList();">
 <header>
     <h1>Header</h1>
 </header>
-
 <div class="row">
-    <nav class="col-3 col-m-3 menu">
-        <ul>
-            <li>Menu</li>
-            <li>Menu</li>
-            <li>Menu</li>
-            <li>Menu</li>
-        </ul>
-    </nav>
 
-    <section class="col-9 col-m-12">
-        <button id="add" onclick="add();"></button>
+<nav class="col-3 col-m-3 menu">
+<ul>
+    <li>Menu</li>
+    <li>Menu</li>
+    <li>Menu</li>
+    <li>Menu</li>
+</ul>
+</nav>
 
-        <!-- <table class="hidden"></table> -->
+<div id="notification"> 
+    <p>Activity Saved</p>
+</div>
 
-        <table id="activityTable"> </table>
-    </section>
+<section class="col-6 col-m-9">
+    <button id="add" onclick="add();"></button>
+    <table id="activityTable"> </table>
+</section>
+
+<!-- <section class = "clear col-3 col-m-12"></section> -->
+<aside class="col-3 col-m-12">
+    <p style = "font: italic bold 1.5em Dancing Script; "> Completed Activities  </p>
+    <table id="activityTableCompleted"></table>
+</aside>
 
 </div>
 
